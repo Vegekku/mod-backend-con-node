@@ -1,0 +1,27 @@
+Ad
+  -string name
+  -boolean sale
+  -decimal price
+  -file picture
+  -array tags manytomany
+
+Tags (work, lifestyle, motor, mobile)
+  -string name
+  -array ads manytomany
+
+API
+  -lista de anuncios
+    -paginada
+    -filtros por tag
+    -tipo de ad (venta/busca)
+    -rango de precio (min/max)
+    -nombre de articulo (empieza)
+  -lista de tags
+  -crear ad
+
+1. Buen aprovechamiento de recursos
+2. Documentación
+3. Código API bien formateado
+4. Libre elección de tecnología de desarrollo (javascript, angular, vue, jquery, etc)
+5. Suficiente página EJS con listado, aplica filtros en la URL (como ejemplo API) (http://localhost:3000/anuncios?start=1&limit=3&sort=name&tag=lifestyle)
+
