@@ -4,14 +4,12 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set('view engine', 'html');
+app.engine('html', require('ejs').__express);
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -19,8 +17,29 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+/**
+ * Database connection
+ */
+require('./lib/connectMongoose');
+require('./models/Ad');
+
+/**
+ * API routes
+ */
+// Make an array in case you have several api versions
+const apiRoute = '/api/v1';
+
+/**
+ * Globals variable
+ */
+app.locals.title = 'Nodepop';
+
+app.use(apiRoute + '/ads', require('./routes/apiv1/ads'));
+
+/**
+ * Web routes
+ */
+app.use('/', require('./routes/index'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -29,13 +48,28 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
+console.log(err);
+  // JSON response in case API request
+  if (isApiRequest(req)) {
+    res.json({ success: false, err });
+    return;
+  }
 
   // render the error page
-  res.status(err.status || 500);
   res.render('error');
 });
 
 module.exports = app;
+
+/**
+ * Check is req is an API Request
+ * @param {Request} req 
+ */
+function isApiRequest(req) {
+  return req.originalUrl.indexOf(apiRoute) === 0;
+}

@@ -1,16 +1,25 @@
 # NODEPOP
 
-## First steps
+## 1. Configuration
 
-Stay on nodepop directory:
-```
-$ cd nodepop
-```
-Install dependencies:
-```
+### Install dependencies
+```shell
 $ npm install
 ```
-Run the app:
+
+### Init database
+Below command **will delete your current database** and will load base data. Go to `lib/connectMongoose.js` for checking the connection to database.
+```shell
+npm run install-db
 ```
-$ DEBUG=nodepop: * npm start
+
+### Run the app
+On production environment:
+```shell
+$ npm start
+```
+
+On develop environment:
+```shell
+$ npm run dev
 ```
