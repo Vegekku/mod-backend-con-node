@@ -17,7 +17,7 @@ router.get('/', async (req, res, next) => {
         // TODO Hacer tag para varios tags
         const tag = req.query.tag;
         const sale = req.query.sale;
-        const price = req.query.price;
+        let price = req.query.price;
         const name = req.query.name;
 
         const filters = {};
@@ -28,6 +28,28 @@ router.get('/', async (req, res, next) => {
 
         if (sale) {
             filters.sale = sale;
+        }
+
+        if (price) {
+            const index = price.indexOf('-');
+            const lastIndex = price.lastIndexOf('-');
+            const priceLength = price.length - 1;
+
+            if (index === -1) { // Equal to price: 50
+                filters.price = price;
+            } else if (index === 0) { // Less than price: -50
+                filters.price = { $lte: price.substring(1) };
+            } else if (index === priceLength) { // More than price: 10-
+                filters.price = { $gte: price.substring(0,priceLength) };
+            } else if (index === lastIndex) { // Between price: 10-50
+                price = price.split('-');
+                // Order range price, it always must be smaller-bigger 
+                if (price[0] < price[1]) {
+                    filters.price = { $gte: price[0], $lte: price[1] };
+                } else {
+                    filters.price = { $gte: price[1], $lte: price[0] };
+                }
+            }
         }
 
         const start = parseInt(req.query.start);
