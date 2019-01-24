@@ -13,9 +13,7 @@ const Ad = require('../../models/Ad');
  */
 router.get('/', async (req, res, next) => {
     try {
-        // TODO Lista de anuncios paginada. Con filtros por tag, tipo de anuncio (venta o búsqueda),rango de precio (precio min. y precio max.) y nombre de artículo (que empiece por eldato buscado)
-        // TODO Hacer tag para varios tags
-        const tag = req.query.tag;
+        const tags = req.query.tag;
         const sale = req.query.sale;
         let price = req.query.price;
         const name = req.query.name;
@@ -28,6 +26,10 @@ router.get('/', async (req, res, next) => {
 
         if (sale) {
             filters.sale = sale;
+        }
+
+        if (tags) {
+            filters.tags = { $in: tags};
         }
 
         if (price) {
@@ -56,7 +58,6 @@ router.get('/', async (req, res, next) => {
         const limit = parseInt(req.query.limit);
         const sort = req.query.sort;
 
-        // const ads = await Ad.find().exec();
         const ads = await Ad.list(filters, start, limit, sort)
 
         res.json({
@@ -69,8 +70,33 @@ router.get('/', async (req, res, next) => {
     }
 });
 
-// TODO GET tags
+/**
+ * POST /tags
+ * Post a new tag
+ * 
+ * http://localhost:3001/api/v1/ads
+ *  tag=mobile
+ *  tag=lifestyle
+ *  name=example
+ *  price=1
+ *  sale=true
+ *  picture=file
+ */
+router.post('/', async (req, res, next) => {
+    try {
+        console.log(req.body);
+        let ad = null;
 
-// TODO POST ad
+        // TODO Crear un nuevo elemento Ad
+
+        res.json({
+            success: true,
+            results: ad
+        });
+    } catch (error) {
+        next(error);
+        return;
+    }
+});
 
 module.exports = router;

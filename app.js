@@ -24,17 +24,18 @@ require('./lib/connectMongoose');
 require('./models/Ad');
 
 /**
+ * Globals variable
+ */
+app.locals.title = 'Nodepop';
+
+/**
  * API routes
  */
 // Make an array in case you have several api versions
 const apiRoute = '/api/v1';
 
-/**
- * Globals variable
- */
-app.locals.title = 'Nodepop';
-
 app.use(apiRoute + '/ads', require('./routes/apiv1/ads'));
+app.use(apiRoute + '/tags', require('./routes/apiv1/tags'));
 
 /**
  * Web routes
