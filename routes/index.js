@@ -6,7 +6,9 @@ const apiRoute = 'http://localhost:3001/api/v1/';
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  axios.get(apiRoute+'ads').then( httpResponse => {
+  const search = req._parsedUrl.search ? req._parsedUrl.search : '';
+
+  axios.get(apiRoute+'ads'+search).then( httpResponse => {
     const data = httpResponse.data;
     if (data.success === true) {
       renderResponse(res, 'index', {

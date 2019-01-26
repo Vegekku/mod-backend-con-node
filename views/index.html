@@ -7,9 +7,13 @@
   <body>
     <h1><%= title %></h1>
     <section>
-        <% ads.forEach(ad => { %>
-          <%- include('includes/ad.html', {ad}) %>
-        <% }) %>
+        <% if (ads !== null) { %>
+          <% ads.forEach(ad => { %>
+            <%- include('includes/ad.html', {ad}) %>
+          <% }) %>
+        <% } else { %>
+          <h2>Oops! Parece que no hemos encontrado lo que buscas</h2>
+        <% } %>
     </section>
   </body>
 </html>

@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const Ad = require('../../models/Ad');
+const { query, body, validationResult } = require('express-validator/check');
 
 /**
  * GET /ads
@@ -11,8 +12,21 @@ const Ad = require('../../models/Ad');
  * http://localhost:3001/api/v1/ads?start=1&limit=3&sort=name&tag=lifestyle
  * http://localhost:3001/api/v1/ads?tag=mobile&sale=false&name=ip&price=50-&start=0&limit=2&sort=price
  */
-router.get('/', async (req, res, next) => {
+router.get('/', [
+    query('name').optional().isAlphanumeric().withMessage('Must be alphanumeric'),
+    query('sale').optional().isBoolean().withMessage('Must be boolean'),
+    query('sort').optional().isIn(['name','sale','price']).withMessage('Must be name, sale or price'),
+    query('start').optional().isNumeric().withMessage('Must be numeric'),
+    query('limit').optional().isNumeric().withMessage('Must be numeric'),
+    // query('price').optional().isNumeric().withMessage('Must be numeric'),
+    query('tag').optional().isIn(['work','lifestyle','motor','mobile']).withMessage('Must be one of allow values. GET /tags to check them.'),
+], async (req, res, next) => {
     try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({success: false, errors: errors.array()});
+        }
+
         const tags = req.query.tag;
         const sale = req.query.sale;
         let price = req.query.price;
@@ -60,7 +74,7 @@ router.get('/', async (req, res, next) => {
 
         const ads = await Ad.list(filters, start, limit, sort)
 
-        res.json({
+        res.status(200).json({
             success: true,
             results: ads
         });
@@ -82,14 +96,23 @@ router.get('/', async (req, res, next) => {
  *  sale=true
  *  picture=file
  */
-router.post('/', async (req, res, next) => {
+router.post('/', [
+    // body('name').isAlphanumeric().withMessage('Must be alphanumeric'),
+    body('sale').isBoolean().withMessage('Must be boolean'),
+    body('price').isNumeric().withMessage('Must be numeric'),
+    body('tags').isIn(['work','lifestyle','motor','mobile']).withMessage('Must be one of allow values. GET /tags to check them.'),
+], async (req, res, next) => {
     try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({success: false, errors: errors.array()});
+        }
+
         const data = req.body;
-        // TODO Validar datos antes de crear
         const ad = new Ad(data);
         const saveAd = await ad.save();
         
-        res.json({ success: true, result: saveAd});
+        res.status(201).json({ success: true, result: saveAd});
     } catch (error) {
         next(error);
         return;
