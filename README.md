@@ -7,7 +7,7 @@ Nodejs project for KeepCoding VI Bootcamp Web.
 3. [Use website](#3.-use-website)
 4. [Changelog](#4.-changelog)
 
-## 1. Configuration [^](#nodepop)
+## 1. Configuration
 
 ### Install dependencies
 ```shell
@@ -31,7 +31,9 @@ On develop environment:
 $ npm run dev
 ```
 
-## 2. Use API [^](#nodepop)
+[Go to index](#nodepop)
+
+## 2. Use API
 
 ### GET ads
 GET: http://localhost:3001/api/v1/ads
@@ -64,7 +66,9 @@ Necessary body parameters to post ad:
 * **tags**: string, can be `work`, `lifestyle`, `motor` or/and `mobile`. Add more tags parameter to add tags.
 * **picture**: string, name of the picture file on server (`./public/images/`).
 
-## 3. Use website [^](#nodepop)
+[Go to index](#nodepop)
+
+## 3. Use website
 
 ### Home
 
@@ -77,7 +81,9 @@ Add to url any of query parameters used in [API GET ads](#get-ads). Examples:
 * http://localhost:3001/?start=1&limit=3&sort=name&tag=lifestyle
 * http://localhost:3001/?tag=mobile&sale=false&name=ip&price=50-&start=0&limit=2&sort=price
 
-## 4. CHANGELOG [^](#nodepop)
+[Go to index](#nodepop)
+
+## 4. CHANGELOG
 
 ### v1.0
 
@@ -88,3 +94,5 @@ Basic practice version. Include:
 * Homepage with simple EJS design.
 * Initialization script of database.
 * README doc with use instructions.
+
+[Go to index](#nodepop)
