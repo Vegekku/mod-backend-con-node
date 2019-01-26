@@ -2,7 +2,7 @@
 
 Nodejs project for KeepCoding VI Bootcamp Web.
 
-1. [Configuration](#1.-configuration)
+1. [Configuration](##1.-configuration)
 2. [Use API](#2.-use-api)
 3. [Use website](#3.-use-website)
 4. [Changelog](#4.-changelog)
