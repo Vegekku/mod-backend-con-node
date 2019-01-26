@@ -6,9 +6,10 @@
   </head>
   <body>
     <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <% ads.forEach(ad => { %>
-      <%- include('includes/ad.html', {ad}) %>
-    <% }) %>
+    <section>
+        <% ads.forEach(ad => { %>
+          <%- include('includes/ad.html', {ad}) %>
+        <% }) %>
+    </section>
   </body>
 </html>
