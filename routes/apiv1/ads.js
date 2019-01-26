@@ -76,7 +76,7 @@ router.get('/', async (req, res, next) => {
  * 
  * http://localhost:3001/api/v1/ads
  *  tag=mobile
- *  tag=lifestyle
+ *  tags=lifestyle
  *  name=example
  *  price=1
  *  sale=true
@@ -84,15 +84,12 @@ router.get('/', async (req, res, next) => {
  */
 router.post('/', async (req, res, next) => {
     try {
-        console.log(req.body);
-        let ad = null;
-
-        // TODO Crear un nuevo elemento Ad
-
-        res.json({
-            success: true,
-            results: ad
-        });
+        const data = req.body;
+        // TODO Validar datos antes de crear
+        const ad = new Ad(data);
+        const saveAd = await ad.save();
+        
+        res.json({ success: true, result: saveAd});
     } catch (error) {
         next(error);
         return;

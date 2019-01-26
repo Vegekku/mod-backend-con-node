@@ -54,7 +54,7 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-console.log(err);
+
   // JSON response in case API request
   if (isApiRequest(req)) {
     res.json({ success: false, err });
