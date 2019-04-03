@@ -6,7 +6,7 @@
 
  const readline = require('readline');
  const db = require('../lib/connectMongoose');
- const Ad = require('../models/Ad');
+ const Ad = require('mongoose').model('Ad');
  const adsData = require('../data/ads.json');
 
  db.once('open', async () => {
@@ -14,20 +14,15 @@
         //ask user before delete database
         const answer = await askUser('Database will be erased. Are you ok? (Yes/No)');
 
-        if (answer === 'No') {
+        if (answer.toLowerCase() === 'yes') {
+            await initModel(Ad, adsData, 'ads');
+            db.close();
+        } else {
             console.log('Aborting database init.');
             process.exit(0);
-        }else if (answer !== 'Yes') {
-            console.log('Respond \`Yes\` to continue. Aborting database init.');
-            process.exit(0);
         }
-
-        await initModel(Ad, adsData, 'ads');
-
-        db.close();
-        
     } catch (error) {
-        console.log('There was an error,', error);
+        console.error('There was an error,', error);
         process.exit(1);
     }
  });

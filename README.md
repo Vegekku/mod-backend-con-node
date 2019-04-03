@@ -23,11 +23,12 @@ $ npm run install-db
 ### Run the app
 On production environment:
 ```shell
-$ npm start
+$ npm run build
 ```
 
 On develop environment:
 ```shell
+$ npm start
 $ npm run dev
 ```
 
@@ -84,6 +85,12 @@ Add to url any of query parameters used in [API GET ads](#get-ads). Examples:
 [Go to index](#nodepop)
 
 ## 4. CHANGELOG
+
+### v1.1
+
+Fixed issues from teacher:
+* Indexes on database fields.
+* Abstract functions on modules.
 
 ### v1.0
 

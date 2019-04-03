@@ -1,8 +1,16 @@
+'use strict';
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
+/**
+ * Database connection
+ */
+require('./lib/connectMongoose');
+require('./models/Ad');
 
 var app = express();
 
@@ -16,12 +24,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-/**
- * Database connection
- */
-require('./lib/connectMongoose');
-require('./models/Ad');
 
 /**
  * Globals variable
@@ -55,6 +57,9 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
+  // Show in log in case error 500
+  if (err.status && err.status >= 500) console.error(err);
+
   // JSON response in case API request
   if (isApiRequest(req)) {
     res.json({ success: false, err });
@@ -65,8 +70,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
-
 /**
  * Check is req is an API Request
  * @param {Request} req 
@@ -74,3 +77,5 @@ module.exports = app;
 function isApiRequest(req) {
   return req.originalUrl.indexOf(apiRoute) === 0;
 }
+
+module.exports = app;

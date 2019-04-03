@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const Ad = require('../../models/Ad');
+const Ad = require('mongoose').model('Ad');
 const { query, body, validationResult } = require('express-validator/check');
 
 /**
@@ -27,12 +27,15 @@ router.get('/', [
             return res.status(400).json({success: false, errors: errors.array()});
         }
 
+        const start = parseInt(req.query.start) || 0;
+        const limit = parseInt(req.query.limit) || 100;
+        const sort = req.query.sort || '_id';
+        const filters = {};
+
         const tags = req.query.tag;
         const sale = req.query.sale;
         let price = req.query.price;
         const name = req.query.name;
-
-        const filters = {};
 
         if (name) {
             filters.name = new RegExp('^'+ name, "i");
@@ -68,25 +71,20 @@ router.get('/', [
             }
         }
 
-        const start = parseInt(req.query.start);
-        const limit = parseInt(req.query.limit);
-        const sort = req.query.sort;
-
-        const ads = await Ad.list(filters, start, limit, sort)
+        const ads = await Ad.list(filters, start, limit, sort);
 
         res.status(200).json({
             success: true,
             results: ads
         });
     } catch (error) {
-        next(error);
-        return;
+        return next(error);
     }
 });
 
 /**
- * POST /tags
- * Post a new tag
+ * POST /ads
+ * Post a new ad
  * 
  * http://localhost:3001/api/v1/ads
  *  tag=mobile
@@ -100,7 +98,7 @@ router.post('/', [
     // body('name').isAlphanumeric().withMessage('Must be alphanumeric'),
     body('sale').isBoolean().withMessage('Must be boolean'),
     body('price').isNumeric().withMessage('Must be numeric'),
-    body('tags').isIn(['work','lifestyle','motor','mobile']).withMessage('Must be one of allow values. GET /tags to check them.'),
+    body('tags').isIn(Ad.allowedTags()).withMessage('Must be one of allow values. GET /tags to check them.'),
 ], async (req, res, next) => {
     try {
         const errors = validationResult(req);

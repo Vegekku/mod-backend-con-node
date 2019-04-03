@@ -2,6 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
+const Ad = require('mongoose').model('Ad');
 
 /**
  * GET /tags
@@ -13,12 +14,7 @@ router.get('/', async (req, res, next) => {
     try {
         res.json({
             success: true,
-            results: [
-                'work',
-                'lifestyle',
-                'motor',
-                'mobile'
-            ]
+            results: Ad.allowedTags()
         });
     } catch(error) {
         next(error);
