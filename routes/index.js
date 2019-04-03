@@ -1,18 +1,19 @@
 const express = require('express');
 const axios = require('axios');
+const { renderResponse } = require('../lib/utils');
+
 const router = express.Router();
-const renderResponse = require('../lib/utils').renderResponse;
 
 const apiRoute = 'http://localhost:3001/api/v1/';
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', (req, res, next) => {
   const search = req._parsedUrl.search ? req._parsedUrl.search : '';
 
   axios
-    .get(apiRoute+'ads'+search)
-    .then( httpResponse => {
-      const data = httpResponse.data;
+    .get(`${apiRoute}ads${search}`)
+    .then(httpResponse => {
+      const { data } = httpResponse;
       if (data.success === true) {
         renderResponse(res, 'index', {
           ads: data.results

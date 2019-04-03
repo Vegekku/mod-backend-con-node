@@ -103,3 +103,7 @@ Basic practice version. Include:
 * README doc with use instructions.
 
 [Go to index](#nodepop)
+
+## 5. EXTRAS
+
+https://prettier.io/docs/en/options.html

@@ -1,10 +1,10 @@
 'use strict';
 
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
 /**
  * Database connection
@@ -12,7 +12,7 @@ var logger = require('morgan');
 require('./lib/connectMongoose');
 require('./models/Ad');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -36,8 +36,16 @@ app.locals.title = 'Nodepop';
 // Make an array in case you have several api versions
 const apiRoute = '/api/v1';
 
-app.use(apiRoute + '/ads', require('./routes/apiv1/ads'));
-app.use(apiRoute + '/tags', require('./routes/apiv1/tags'));
+/**
+ * Check is req is an API Request
+ * @param {Request} req
+ */
+function isApiRequest(req) {
+  return req.originalUrl.indexOf(apiRoute) === 0;
+}
+
+app.use(`${apiRoute}/ads`, require('./routes/apiv1/ads'));
+app.use(`${apiRoute}/tags`, require('./routes/apiv1/tags'));
 
 /**
  * Web routes
@@ -45,12 +53,12 @@ app.use(apiRoute + '/tags', require('./routes/apiv1/tags'));
 app.use('/', require('./routes/index'));
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   res.status(err.status || 500);
 
   // set locals, only providing error in development
@@ -69,13 +77,5 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.render('error');
 });
-
-/**
- * Check is req is an API Request
- * @param {Request} req 
- */
-function isApiRequest(req) {
-  return req.originalUrl.indexOf(apiRoute) === 0;
-}
 
 module.exports = app;
