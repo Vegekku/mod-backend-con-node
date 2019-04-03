@@ -91,6 +91,7 @@ Add to url any of query parameters used in [API GET ads](#get-ads). Examples:
 Fixed issues from teacher:
 * Indexes on database fields.
 * Abstract functions on modules.
+Integrated Prettier + ESLint + Airbnb. [Followed steps](https://blog.echobind.com/integrating-prettier-eslint-airbnb-style-guide-in-vscode-47f07b5d7d6a).
 
 ### v1.0
 
