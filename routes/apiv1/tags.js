@@ -8,7 +8,7 @@ const router = express.Router();
 /**
  * GET /tags
  * Get list of tags
- * http://localhost:3001/api/v1/tags
+ * https://localhost/api/v1/tags
  */
 router.get('/', async (req, res, next) => {
   try {

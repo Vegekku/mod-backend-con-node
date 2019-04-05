@@ -10,8 +10,8 @@ const router = express.Router();
  * GET /ads
  * Get list of ads
  *
- * http://localhost:3001/api/v1/ads?start=1&limit=3&sort=name&tag=lifestyle
- * http://localhost:3001/api/v1/ads?tag=mobile&sale=false&name=ip&price=50-&start=0&limit=2&sort=price
+ * https://localhost/api/v1/ads?start=1&limit=3&sort=name&tag=lifestyle
+ * https://localhost/api/v1/ads?tag=mobile&sale=false&name=ip&price=50-&start=0&limit=2&sort=price
  */
 router.get(
   '/',
@@ -112,7 +112,7 @@ router.get(
  * POST /ads
  * Post a new ad
  *
- * http://localhost:3001/api/v1/ads
+ * https://localhost/api/v1/ads
  *  tag=mobile
  *  tags=lifestyle
  *  name=example
