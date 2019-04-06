@@ -35,7 +35,7 @@ function normalizePort(val) {
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(PORT || '3000');
+const port = normalizePort(PORT || '3001');
 app.set('port', port);
 
 /**
@@ -68,15 +68,15 @@ function onError(error) {
  * Redirect HTTP to HTTPS server
  */
 
-http
-  .createServer((req, res) => {
-    res.writeHead(301, {
-      Location: `https://${req.headers['host']}${req.url}`
-    });
-    res.end();
-  })
-  .listen(80)
-  .on('error', onError);
+// http
+//   .createServer((req, res) => {
+//     res.writeHead(301, {
+//       Location: `https://${req.headers['host']}${req.url}`
+//     });
+//     res.end();
+//   })
+//   .listen(80)
+//   .on('error', onError);
 
 /**
  * Create HTTPS server.
@@ -86,6 +86,8 @@ const options = {
   key: fs.readFileSync('./certificates/localhost+2-key.pem'),
   cert: fs.readFileSync('./certificates/localhost+2.pem')
 };
+// TODO Fix next line, use it just in develop environment
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 const server = https.createServer(options, app);
 
 /**

@@ -5,6 +5,8 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const i18n = require('./lib/i18nConfigure')();
+const { API_ROUTE } = require('./lib/config');
 
 /**
  * Database connection
@@ -26,6 +28,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 /**
+ * Setup i18n
+ */
+app.use(i18n.init);
+
+/**
  * Globals variable
  */
 app.locals.title = 'Nodepop';
@@ -34,7 +41,7 @@ app.locals.title = 'Nodepop';
  * API routes
  */
 // Make an array in case you have several api versions
-const apiRoute = '/api/v1';
+const apiRoute = API_ROUTE || 'api/v1/';
 
 /**
  * Check is req is an API Request
@@ -44,13 +51,14 @@ function isApiRequest(req) {
   return req.originalUrl.indexOf(apiRoute) === 0;
 }
 
-app.use(`${apiRoute}/ads`, require('./routes/apiv1/ads'));
-app.use(`${apiRoute}/tags`, require('./routes/apiv1/tags'));
+app.use(`/${apiRoute}ads`, require('./routes/apiv1/ads'));
+app.use(`/${apiRoute}tags`, require('./routes/apiv1/tags'));
 
 /**
  * Web routes
  */
 app.use('/', require('./routes/index'));
+app.use('/change-lang', require('./routes/change-lang'));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

@@ -6,9 +6,9 @@
         <h2><%= ad.name %></h2>
         <h3>
         <% if(ad.sale === true) { %>
-            En venta por <%= ad.price %>€
+            <%= __('On sale by') %> <%= ad.price %>€
         <% } else { %>
-            Se busca por <%= ad.price %>€
+            <%= __('Wanted by') %> <%= ad.price %>€
         <% } %>
         </h3>
         Tags: <%= ad.tags %>

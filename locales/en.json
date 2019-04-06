@@ -1,0 +1,15 @@
+{
+	"Deleted": {
+		"one": "Deleted %s",
+		"other": "Deleted %s"
+	},
+	"Inserted": {
+		"one": "Inserted %s",
+		"other": "Inserted %s"
+	},
+	"No results found": "Oops! No results found",
+	"On sale by": "On sale by",
+	"Wanted by": "Wanted by",
+	"Database will be erased. Are you ok? (Yes/No)": "Database will be erased. Are you ok? (Yes/No)",
+	"Aborting database init.": "Aborting database init."
+}

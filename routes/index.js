@@ -5,7 +5,7 @@ const { LOCALHOST, API_ROUTE } = require('../lib/config');
 
 const router = express.Router();
 
-const apiRoute = LOCALHOST + API_ROUTE || 'https://localhost/api/v1/';
+const apiRoute = LOCALHOST + API_ROUTE || 'https://localhost:3001/api/v1/';
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
