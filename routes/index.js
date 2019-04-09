@@ -1,7 +1,8 @@
 const express = require('express');
 const axios = require('axios');
 const { renderResponse } = require('../lib/utils');
-const { LOCALHOST, API_ROUTE } = require('../lib/config');
+
+const { LOCALHOST, API_ROUTE } = process.env;
 
 const router = express.Router();
 

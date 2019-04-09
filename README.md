@@ -14,6 +14,12 @@ Nodejs project for KeepCoding VI Bootcamp Web.
 $ npm install
 ```
 
+### Generate .env file
+Execute next command to create a copy of `.env.example` and edit it your way:
+```shell
+$ cp .env.example .env
+```
+
 ### Init database
 Below command **will delete your current database** and will load base data. Go to `lib/connectMongoose.js` for checking the connection to database.
 ```shell
@@ -24,12 +30,6 @@ $ npm run install-db
 **Must have installed** [`mkcert`](https://github.com/FiloSottile/mkcert#installation)
 ```shell
 $ npm run generate-certs
-```
-
-### Generate .env file
-Execute next command to create a copy of `.env.example` and edit it your way:
-```shell
-$ cp .env.example .env
 ```
 
 ### Run the app

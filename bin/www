@@ -3,13 +3,14 @@
 /**
  * Module dependencies.
  */
-
+require('dotenv').config();
 const debug = require('debug')('nodepop:server');
 const http = require('http');
 const https = require('https');
 const fs = require('fs');
 const app = require('../app');
-const { PORT, LOCALHOST } = require('../lib/config');
+
+const { PORT, LOCALHOST } = process.env;
 
 /**
  * Normalize a port into a number, string, or false.
