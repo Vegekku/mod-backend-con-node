@@ -6,9 +6,11 @@
 
 const readline = require('readline');
 const Ad = require('../models/Ad');
+const User = require('../models/User');
 const db = require('../lib/connectMongoose');
 const i18n = require('../lib/i18nConfigure')();
 const adsData = require('../data/ads.json');
+const usersData = require('../data/users.json');
 
 i18n.setLocale('es');
 
@@ -54,6 +56,13 @@ db.once('open', async () => {
 
     if (answer.toLowerCase() === 'yes') {
       await initModel(Ad, adsData, 'ads');
+
+      // encrypt passwords
+      for (let i = 0; i < usersData.length; i++) {
+        usersData[i].password = await User.hashPassword(usersData[i].password)
+      }
+      await initModel(User, usersData, 'users');
+
       db.close();
     } else {
       console.log(i18n.__('Aborting database init.'));

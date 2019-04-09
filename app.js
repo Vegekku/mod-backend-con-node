@@ -5,13 +5,16 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const i18n = require('./lib/i18nConfigure')();
-const { API_ROUTE } = require('./lib/config');
+
+const { API_ROUTE } = process.env;
 
 /**
  * Database connection
  */
-require('./lib/connectMongoose');
+const mongooseConnection = require('./lib/connectMongoose');
 require('./models/Ad');
 
 const app = express();
@@ -38,6 +41,25 @@ app.use(i18n.init);
 app.locals.title = 'Nodepop';
 
 /**
+ * User session
+ */
+app.use(
+  session({
+    name: 'nodepop-session',
+    secret: 'your-secret-env-file-key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: true,
+      maxAge: 2 * 24 * 60 * 60 * 1000
+    },
+    store: new MongoStore({
+      mongooseConnection
+    })
+  })
+);
+
+/**
  * API routes
  */
 // Make an array in case you have several api versions
@@ -51,14 +73,22 @@ function isApiRequest(req) {
   return req.originalUrl.indexOf(apiRoute) === 0;
 }
 
+// TODO Crear apiController con rutas api
+// const apiController = require('./routes/apiController');
+
 app.use(`/${apiRoute}ads`, require('./routes/apiv1/ads'));
 app.use(`/${apiRoute}tags`, require('./routes/apiv1/tags'));
+const loginController = require('./routes/apiv1/loginController');
+
+app.post(`/${apiRoute}authenticate`, loginController.post);
 
 /**
  * Web routes
  */
+const sessionAuth = require('./lib/sessionAuth');
 app.use('/', require('./routes/index'));
 app.use('/change-lang', require('./routes/change-lang'));
+// app.get('/privado', sessionAuth(), privadoController.index);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
