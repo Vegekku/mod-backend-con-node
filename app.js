@@ -6,7 +6,6 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const i18n = require('./lib/i18nConfigure')();
-const jwtAuth = require('./lib/jwtAuth');
 
 /**
  * Environment variables
@@ -56,17 +55,12 @@ function isApiRequest(req) {
   return req.originalUrl.indexOf(`/${apiRoute}`) === 0;
 }
 
-const loginController = require('./routes/apiv1/loginController');
-
-app.post(`/${apiRoute}authenticate`, loginController.post);
-app.use(`/${apiRoute}ads`, jwtAuth(), require('./routes/apiv1/ads'));
-app.use(`/${apiRoute}tags`, jwtAuth(), require('./routes/apiv1/tags'));
+app.use(`/${apiRoute}`, require('./routes/api'));
 
 /**
  * Web routes
  */
 app.use('/', require('./routes/index'));
-app.use('/change-lang', require('./routes/change-lang'));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

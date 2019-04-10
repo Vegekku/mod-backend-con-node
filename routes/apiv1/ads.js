@@ -3,6 +3,7 @@
 const express = require('express');
 const Ad = require('mongoose').model('Ad');
 const { query, body, validationResult } = require('express-validator/check');
+const jwtAuth = require('../../lib/jwtAuth');
 
 const router = express.Router();
 
@@ -98,7 +99,7 @@ router.get(
 
       const ads = await Ad.list(filters, start, limit, sort);
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         results: ads
       });
@@ -123,6 +124,7 @@ router.get(
 router.post(
   '/',
   [
+    jwtAuth(),
     // body('name').isAlphanumeric().withMessage('Must be alphanumeric'),
     body('sale')
       .isBoolean()
@@ -144,7 +146,7 @@ router.post(
       const data = req.body;
       const saveAd = await Ad.createRecord(data);
 
-      res.status(201).json({ success: true, result: saveAd });
+      return res.status(201).json({ success: true, result: saveAd });
     } catch (error) {
       return next(error);
     }

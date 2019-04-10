@@ -5,7 +5,6 @@
  */
 require('dotenv').config();
 const debug = require('debug')('nodepop:server');
-const http = require('http');
 const https = require('https');
 const fs = require('fs');
 const app = require('../app');
@@ -47,7 +46,7 @@ function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
   }
-
+  console.log(error);
   const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
 
   // handle specific listen errors with friendly messages
@@ -64,20 +63,6 @@ function onError(error) {
       throw error;
   }
 }
-
-/**
- * Redirect HTTP to HTTPS server
- */
-
-// http
-//   .createServer((req, res) => {
-//     res.writeHead(301, {
-//       Location: `https://${req.headers['host']}${req.url}`
-//     });
-//     res.end();
-//   })
-//   .listen(80)
-//   .on('error', onError);
 
 /**
  * Create HTTPS server.

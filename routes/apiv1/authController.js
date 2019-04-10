@@ -6,14 +6,14 @@ const User = require('../../models/User');
 
 const { JWT_SECRET } = process.env;
 
-class LoginController {
+class AuthController {
   async post(req, res, next) {
     try {
       const { email, password } = req.body;
       const user = await User.findOne({ email });
 
       // user not found
-      if (!user || !await bcrypt.compare(password,user.password)) {
+      if (!user || !(await bcrypt.compare(password, user.password))) {
         res.json({
           success: false,
           error: res.__('Invalid credentials')
@@ -33,4 +33,4 @@ class LoginController {
   }
 }
 
-module.exports = new LoginController();
+module.exports = new AuthController();
