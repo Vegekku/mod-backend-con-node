@@ -51,7 +51,7 @@ $ npm run dev
 ## 2. Use API
 
 ### GET ads
-GET: https://localhost/api/v1/ads
+GET: https://localhost:3001/api/v1/ads
 
 You can filter results adding any of below query parameters:
 
@@ -64,14 +64,27 @@ You can filter results adding any of below query parameters:
 * **price**: can be `range of prices` (10-50), `higher price` (10-), `lower price` (-50) or `price` (25.2).
 
 Examples:
-* https://localhost/api/v1/ads?start=1&limit=3&sort=name&tag=lifestyle
-* https://localhost/api/v1/ads?tag=mobile&sale=false&name=ip&price=50-&start=0&limit=2&sort=price
+* https://localhost:3001/api/v1/ads?start=1&limit=3&sort=name&tag=lifestyle
+* https://localhost:3001/api/v1/ads?tag=mobile&sale=false&name=ip&price=50-&start=0&limit=2&sort=price
 
 ### GET tags
-GET: https://localhost/api/v1/tags
+GET: https://localhost:3001/api/v1/tags
 
-### POST ad
-POST: https://localhost/api/v1/ads
+### POST authenticate
+POST: https://localhost:3001/api/v1/authenticate
+
+Necessary body parameters to authenticate:
+
+* **email**: string, user email.
+* **password**: string, user password.
+
+This request return a JWT used in request with authentication
+
+### POST ads
+POST: https://localhost:3001/api/v1/ads
+
+Necessary header to authenticate:
+* **authenticate**: string, user token with format `Bearer <JWT_TOKEN>`.
 
 Necessary body parameters to post ad:
 
@@ -87,14 +100,14 @@ Necessary body parameters to post ad:
 
 ### Home
 
-Access to https://localhost/
+Access to https://localhost:3001/
 
 ### Filter ads
 
 Add to url any of query parameters used in [API GET ads](#get-ads). Examples:
 
-* https://localhost/?start=1&limit=3&sort=name&tag=lifestyle
-* https://localhost/?tag=mobile&sale=false&name=ip&price=50-&start=0&limit=2&sort=price
+* https://localhost:3001/?start=1&limit=3&sort=name&tag=lifestyle
+* https://localhost:3001/?tag=mobile&sale=false&name=ip&price=50-&start=0&limit=2&sort=price
 
 [Go to index](#nodepop)
 
