@@ -11,5 +11,7 @@
 	"On sale by": "En venta por",
 	"Wanted by": "Se busca por",
 	"Database will be erased. Are you ok? (Yes/No)": "La base de datos será eliminada. Estás de acuerdo? (Yes/No)",
-	"Aborting database init.": "Abortado re-instalación de base de datos."
+	"Aborting database init.": "Abortado re-instalación de base de datos.",
+	"Invalid credentials": "Invalid credentials",
+	"There was an error,": "There was an error,"
 }

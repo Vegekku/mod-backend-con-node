@@ -1,6 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const { uploadImage } = require('../lib/utils');
 
 // TODO tags puede ser otro modelo
 const adSchema = mongoose.Schema({
@@ -25,16 +26,22 @@ adSchema.statics.allowedTags = () => {
 adSchema.statics.list = async (filters, skip, limit, sort) => {
   const query = Ad.find(filters);
 
-  // query.skip(skip).limit(limit).select(fields).sort(sort);
   query
     .skip(skip)
     .limit(limit)
+    // .select(fields)
     .sort(sort);
 
   return query.exec();
 };
 
 adSchema.statics.createRecord = async data => new Ad(data).save();
+
+adSchema.methods.setPicture = async image => {
+  if (!image) return;
+
+  this.picture = await uploadImage(image);
+};
 
 const Ad = mongoose.model('Ad', adSchema);
 

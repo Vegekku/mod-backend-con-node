@@ -10,7 +10,7 @@ const userSchema = mongoose.Schema({
 });
 
 userSchema.statics.hashPassword = plainPassword =>
-  bcrypt.hash(plainPassword, 10);
+  bcrypt.hash(String(plainPassword), 10);
 
 const User = mongoose.model('User', userSchema);
 

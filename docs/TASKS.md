@@ -2,8 +2,8 @@
 
 [README](../README.md) / TASKS
 
-* &#9744; Autenticación
-  - &#9744; Crear usuario user@example.com / 1234
+* &#9745; Autenticación
+  - &#9745; Crear usuario user@example.com / 1234
 * &#9745; Internacionalización
   - &#9745; Incluir selector de idioma
 * &#9744; Subida de imagen con tarea en background

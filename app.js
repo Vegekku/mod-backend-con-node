@@ -5,16 +5,18 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
 const i18n = require('./lib/i18nConfigure')();
+const jwtAuth = require('./lib/jwtAuth');
 
+/**
+ * Environment variables
+ */
 const { API_ROUTE } = process.env;
 
 /**
  * Database connection
  */
-const mongooseConnection = require('./lib/connectMongoose');
+require('./lib/connectMongoose');
 require('./models/Ad');
 
 const app = express();
@@ -41,28 +43,9 @@ app.use(i18n.init);
 app.locals.title = 'Nodepop';
 
 /**
- * User session
- */
-app.use(
-  session({
-    name: 'nodepop-session',
-    secret: 'your-secret-env-file-key',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      secure: true,
-      maxAge: 2 * 24 * 60 * 60 * 1000
-    },
-    store: new MongoStore({
-      mongooseConnection
-    })
-  })
-);
-
-/**
  * API routes
  */
-// Make an array in case you have several api versions
+// TODO Make an array in case you have several api versions
 const apiRoute = API_ROUTE || 'api/v1/';
 
 /**
@@ -70,25 +53,20 @@ const apiRoute = API_ROUTE || 'api/v1/';
  * @param {Request} req
  */
 function isApiRequest(req) {
-  return req.originalUrl.indexOf(apiRoute) === 0;
+  return req.originalUrl.indexOf(`/${apiRoute}`) === 0;
 }
 
-// TODO Crear apiController con rutas api
-// const apiController = require('./routes/apiController');
-
-app.use(`/${apiRoute}ads`, require('./routes/apiv1/ads'));
-app.use(`/${apiRoute}tags`, require('./routes/apiv1/tags'));
 const loginController = require('./routes/apiv1/loginController');
 
 app.post(`/${apiRoute}authenticate`, loginController.post);
+app.use(`/${apiRoute}ads`, jwtAuth(), require('./routes/apiv1/ads'));
+app.use(`/${apiRoute}tags`, jwtAuth(), require('./routes/apiv1/tags'));
 
 /**
  * Web routes
  */
-const sessionAuth = require('./lib/sessionAuth');
 app.use('/', require('./routes/index'));
 app.use('/change-lang', require('./routes/change-lang'));
-// app.get('/privado', sessionAuth(), privadoController.index);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -99,18 +77,19 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
 
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
   // Show in log in case error 500
   if (err.status && err.status >= 500) console.error(err);
 
   // JSON response in case API request
   if (isApiRequest(req)) {
+    console.error(err);
     res.json({ success: false, err });
     return;
   }
+
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   res.render('error');

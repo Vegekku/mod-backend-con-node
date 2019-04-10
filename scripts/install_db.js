@@ -54,22 +54,24 @@ db.once('open', async () => {
       i18n.__('Database will be erased. Are you ok? (Yes/No)')
     );
 
-    if (answer.toLowerCase() === 'yes') {
-      await initModel(Ad, adsData, 'ads');
-
-      // encrypt passwords
-      for (let i = 0; i < usersData.length; i++) {
-        usersData[i].password = await User.hashPassword(usersData[i].password)
-      }
-      await initModel(User, usersData, 'users');
-
-      db.close();
-    } else {
+    if (answer.toLowerCase() !== 'yes') {
       console.log(i18n.__('Aborting database init.'));
-      process.exit(0);
+      return process.exit(0);
     }
+
+    await initModel(Ad, adsData, 'ads');
+
+    // encrypt passwords
+    for (let i = 0; i < usersData.length; i += 1) {
+      usersData[i].password = await User.hashPassword(usersData[i].password);
+    }
+    await initModel(User, usersData, 'users');
+
+    db.close();
   } catch (error) {
     console.error(i18n.__('There was an error,'), error);
-    process.exit(1);
+    return process.exit(1);
   }
+
+  return process.exit(0);
 });
