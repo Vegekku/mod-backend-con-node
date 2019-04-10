@@ -7,7 +7,7 @@
 * &#9745; Internacionalización
   - &#9745; Incluir selector de idioma
 * &#9744; Subida de imagen con tarea en background
-  - &#9744; Subida de imagen con POST
+  - &#9745; Subida de imagen con POST
   - &#9744; Creación de thumbnail de imagen subida
 * &#9744; Testing (Opcional)
 * &#9744; Bonus Track (Opcional)

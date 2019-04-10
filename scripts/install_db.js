@@ -54,7 +54,7 @@ db.once('open', async () => {
       i18n.__('Database will be erased. Are you ok? (Yes/No)')
     );
 
-    if (answer.toLowerCase() !== 'yes') {
+    if (answer.toLowerCase() !== 'yes' && answer.length !== 0) {
       console.log(i18n.__('Aborting database init.'));
       return process.exit(0);
     }

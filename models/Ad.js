@@ -8,7 +8,7 @@ const adSchema = mongoose.Schema({
   name: { type: String, index: true },
   sale: { type: Boolean, index: true },
   price: { type: Number, index: true },
-  picture: String,
+  picture: { type: String },
   tags: { type: [String], index: true }
 });
 
@@ -40,7 +40,7 @@ adSchema.statics.createRecord = async data => new Ad(data).save();
 adSchema.methods.setPicture = async image => {
   if (!image) return;
 
-  this.picture = await uploadImage(image);
+  await uploadImage(image);
 };
 
 const Ad = mongoose.model('Ad', adSchema);

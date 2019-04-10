@@ -1,3 +1,8 @@
 node_modules
 certificates
 .env
+uploads
+public/images
+!public/images/bici.jpg
+!public/images/chaquieta.jpg
+!public/images/iphone.jpg

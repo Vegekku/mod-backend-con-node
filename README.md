@@ -78,7 +78,7 @@ Necessary body parameters to authenticate:
 * **email**: string, user email.
 * **password**: string, user password.
 
-This request return a JWT used in request with authentication
+This request return a JWT used in request with authentication.
 
 ### POST ads
 POST: https://localhost:3001/api/v1/ads

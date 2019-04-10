@@ -3,6 +3,7 @@
 const express = require('express');
 const Ad = require('mongoose').model('Ad');
 const { query, body, validationResult } = require('express-validator/check');
+const upload = require('../../lib/multerConfigure');
 const jwtAuth = require('../../lib/jwtAuth');
 
 const router = express.Router();
@@ -125,6 +126,7 @@ router.post(
   '/',
   [
     jwtAuth(),
+    upload.single('picture'),
     // body('name').isAlphanumeric().withMessage('Must be alphanumeric'),
     body('sale')
       .isBoolean()
@@ -143,8 +145,11 @@ router.post(
         return res.status(400).json({ success: false, errors: errors.array() });
       }
 
-      const data = req.body;
-      const saveAd = await Ad.createRecord(data);
+      const testAd = { ...req.body, picture: req.file.filename };
+      const ad = new Ad(testAd);
+      await ad.setPicture(req.file);
+
+      const saveAd = await ad.save();
 
       return res.status(201).json({ success: true, result: saveAd });
     } catch (error) {
