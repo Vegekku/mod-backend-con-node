@@ -145,13 +145,10 @@ router.post(
         return res.status(400).json({ success: false, errors: errors.array() });
       }
 
-      const testAd = { ...req.body, picture: req.file.filename };
-      const ad = new Ad(testAd);
-      await ad.setPicture(req.file);
+      const data = { ...req.body, picture: req.file.filename };
+      const saveAd = await Ad.createRecord(data);
 
-      const saveAd = await ad.save();
-
-      return res.status(201).json({ success: true, result: saveAd });
+      res.status(201).json({ success: true, result: saveAd });
     } catch (error) {
       return next(error);
     }

@@ -1,7 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const { uploadImage } = require('../lib/utils');
+const { createThumbnail, deleteImage } = require('../lib/utils');
 
 // TODO tags puede ser otro modelo
 const adSchema = mongoose.Schema({
@@ -9,7 +9,30 @@ const adSchema = mongoose.Schema({
   sale: { type: Boolean, index: true },
   price: { type: Number, index: true },
   picture: { type: String },
+  thumbnail: { type: String },
   tags: { type: [String], index: true }
+});
+
+adSchema.pre('save', async function() {
+  this.thumbnail = 'hola';
+  console.log('pre', this);
+});
+
+adSchema.post('save', async function(doc) {
+  console.log(this);
+  await createThumbnail(doc.picture);
+});
+
+adSchema.pre('deleteMany', async () => {
+  const ads = await Ad.find({
+    picture: { $nin: ['bici.jpg', 'chaqueta.jpg', 'iphone.png'] }
+  })
+    .select('picture -_id')
+    .exec();
+
+  ads.forEach(async ad => {
+    await deleteImage(ad.picture, true);
+  });
 });
 
 /**
@@ -36,12 +59,6 @@ adSchema.statics.list = async (filters, skip, limit, sort) => {
 };
 
 adSchema.statics.createRecord = async data => new Ad(data).save();
-
-adSchema.methods.setPicture = async image => {
-  if (!image) return;
-
-  await uploadImage(image);
-};
 
 const Ad = mongoose.model('Ad', adSchema);
 
