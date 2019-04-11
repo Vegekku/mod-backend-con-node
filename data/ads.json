@@ -3,16 +3,16 @@
     "name": "Bicicleta",
     "sale": true,
     "price": 230.15,
-    "picture": "images/bici.jpg",
-    "thumbnail": "images/chaqueta.jpg",
+    "picture": "default/bici.jpg",
+    "thumbnail": "default/chaqueta.jpg",
     "tags": ["lifestyle", "motor"]
   },
   {
     "name": "iPhone3GS",
     "sale": false,
     "price": 50.0,
-    "picture": "images/iphone.png",
-    "thumbnail": "images/chaqueta.jpg",
+    "picture": "default/iphone.png",
+    "thumbnail": "default/chaqueta.jpg",
     "tags": ["lifestyle", "mobile"]
   }
 ]

@@ -59,7 +59,10 @@ db.once('open', async () => {
       return process.exit(0);
     }
 
+    // init ad model
     await initModel(Ad, adsData, 'ads');
+    // remove old ad images
+    // TODO remove images
 
     // encrypt passwords
     for (let i = 0; i < usersData.length; i += 1) {

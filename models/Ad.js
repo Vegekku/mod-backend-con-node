@@ -13,26 +13,12 @@ const adSchema = mongoose.Schema({
   tags: { type: [String], index: true }
 });
 
+/**
+ * Create and add a thumbnail before save ad
+ */
 adSchema.pre('save', async function() {
-  this.thumbnail = 'hola';
-  console.log('pre', this);
-});
-
-adSchema.post('save', async function(doc) {
-  console.log(this);
-  await createThumbnail(doc.picture);
-});
-
-adSchema.pre('deleteMany', async () => {
-  const ads = await Ad.find({
-    picture: { $nin: ['bici.jpg', 'chaqueta.jpg', 'iphone.png'] }
-  })
-    .select('picture -_id')
-    .exec();
-
-  ads.forEach(async ad => {
-    await deleteImage(ad.picture, true);
-  });
+  const thumbnail = await createThumbnail(this.picture);
+  this.thumbnail = thumbnail;
 });
 
 /**
