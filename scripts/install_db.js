@@ -5,9 +5,14 @@
  */
 
 const readline = require('readline');
-const Ad = require('mongoose').model('Ad');
+const Ad = require('../models/Ad');
+const User = require('../models/User');
 const db = require('../lib/connectMongoose');
+const i18n = require('../lib/i18nConfigure')();
 const adsData = require('../data/ads.json');
+const usersData = require('../data/users.json');
+
+i18n.setLocale('es');
 
 /**
  * Ask user for any question
@@ -36,28 +41,40 @@ function askUser(question) {
  */
 async function initModel(Model, data, modelName) {
   const deleted = await Model.deleteMany();
-  console.log(`Deleted ${deleted.n} ${modelName}.`);
+  console.log(`${i18n.__n('Deleted', deleted.n)} ${modelName}.`);
 
   const inserted = await Model.insertMany(data);
-  console.log(`Inserted ${inserted.length} ${modelName}.`);
+  console.log(`${i18n.__n('Inserted', inserted.length)} ${modelName}.`);
 }
 
 db.once('open', async () => {
   try {
     // ask user before delete database
     const answer = await askUser(
-      'Database will be erased. Are you ok? (Yes/No)'
+      i18n.__('Database will be erased. Are you ok? (Yes/No)')
     );
 
-    if (answer.toLowerCase() === 'yes') {
-      await initModel(Ad, adsData, 'ads');
-      db.close();
-    } else {
-      console.log('Aborting database init.');
-      process.exit(0);
+    if (answer.toLowerCase() !== 'yes' && answer.length !== 0) {
+      console.log(i18n.__('Aborting database init.'));
+      return process.exit(0);
     }
+
+    // init ad model
+    await initModel(Ad, adsData, 'ads');
+    // remove old ad images
+    // TODO remove images
+
+    // encrypt passwords
+    for (let i = 0; i < usersData.length; i += 1) {
+      usersData[i].password = await User.hashPassword(usersData[i].password);
+    }
+    await initModel(User, usersData, 'users');
+
+    db.close();
   } catch (error) {
-    console.error('There was an error,', error);
-    process.exit(1);
+    console.error(i18n.__('There was an error,'), error);
+    return process.exit(1);
   }
+
+  return process.exit(0);
 });

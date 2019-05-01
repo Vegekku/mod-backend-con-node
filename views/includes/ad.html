@@ -1,16 +1,13 @@
 <article>
-    <div class="ad-image">
-        <img src="images/<%= ad.picture %>" alt="<%= ad.name %>">
-    </div>
-    <div class="ad-info">
-        <h2><%= ad.name %></h2>
-        <h3>
-        <% if(ad.sale === true) { %>
-            En venta por <%= ad.price %>€
-        <% } else { %>
-            Se busca por <%= ad.price %>€
-        <% } %>
-        </h3>
-        Tags: <%= ad.tags %>
-    </div>
+  <div class="ad-image">
+    <img src="<%= ad.picture %>" alt="<%= ad.name %>" />
+  </div>
+  <div class="ad-info">
+    <h2><%= ad.name %></h2>
+    <h3>
+      <% if(ad.sale === true) { %> <%= __('On sale by') %> <%= ad.price %>€ <% }
+      else { %> <%= __('Wanted by') %> <%= ad.price %>€ <% } %>
+    </h3>
+    Tags: <%= ad.tags %>
+  </div>
 </article>

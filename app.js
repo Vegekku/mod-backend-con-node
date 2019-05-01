@@ -5,6 +5,12 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const i18n = require('./lib/i18nConfigure')();
+
+/**
+ * Environment variables
+ */
+const { API_ROUTE } = process.env;
 
 /**
  * Database connection
@@ -26,6 +32,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 /**
+ * Setup i18n
+ */
+app.use(i18n.init);
+
+/**
  * Globals variable
  */
 app.locals.title = 'Nodepop';
@@ -33,19 +44,18 @@ app.locals.title = 'Nodepop';
 /**
  * API routes
  */
-// Make an array in case you have several api versions
-const apiRoute = '/api/v1';
+// TODO Make an array in case you have several api versions
+const apiRoute = API_ROUTE || 'api/v1/';
 
 /**
  * Check is req is an API Request
  * @param {Request} req
  */
 function isApiRequest(req) {
-  return req.originalUrl.indexOf(apiRoute) === 0;
+  return req.originalUrl.indexOf(`/${apiRoute}`) === 0;
 }
 
-app.use(`${apiRoute}/ads`, require('./routes/apiv1/ads'));
-app.use(`${apiRoute}/tags`, require('./routes/apiv1/tags'));
+app.use(`/${apiRoute}`, require('./routes/api'));
 
 /**
  * Web routes
@@ -61,18 +71,19 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
 
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
   // Show in log in case error 500
   if (err.status && err.status >= 500) console.error(err);
 
   // JSON response in case API request
   if (isApiRequest(req)) {
+    console.error(err);
     res.json({ success: false, err });
     return;
   }
+
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   res.render('error');

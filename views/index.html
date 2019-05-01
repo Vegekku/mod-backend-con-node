@@ -2,18 +2,18 @@
 <html>
   <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
   <body>
     <h1><%= title %></h1>
+    <% getLocales().forEach( locale => { %>
+    <a href="/change-lang/<%= locale %>"><%= locale.toUpperCase() %></a>&nbsp;
+    <% }) %>
     <section>
-        <% if (ads !== null) { %>
-          <% ads.forEach(ad => { %>
-            <%- include('includes/ad.html', {ad}) %>
-          <% }) %>
-        <% } else { %>
-          <h2>Oops! Parece que no hemos encontrado lo que buscas</h2>
-        <% } %>
+      <% if (ads !== null) { %> <% ads.forEach(ad => { %> <%-
+      include('includes/ad.html', {ad}) %> <% }) %> <% } else { %>
+      <h2><%= __('No results found') %></h2>
+      <% } %>
     </section>
   </body>
 </html>

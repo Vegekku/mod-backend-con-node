@@ -1,14 +1,24 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const { createThumbnail, deleteImage } = require('../lib/utils');
 
 // TODO tags puede ser otro modelo
 const adSchema = mongoose.Schema({
   name: { type: String, index: true },
   sale: { type: Boolean, index: true },
   price: { type: Number, index: true },
-  picture: String,
+  picture: { type: String },
+  thumbnail: { type: String },
   tags: { type: [String], index: true }
+});
+
+/**
+ * Create and add a thumbnail before save ad
+ */
+adSchema.pre('save', async function() {
+  const thumbnail = await createThumbnail(this.picture);
+  this.thumbnail = thumbnail;
 });
 
 /**
@@ -25,10 +35,10 @@ adSchema.statics.allowedTags = () => {
 adSchema.statics.list = async (filters, skip, limit, sort) => {
   const query = Ad.find(filters);
 
-  // query.skip(skip).limit(limit).select(fields).sort(sort);
   query
     .skip(skip)
     .limit(limit)
+    // .select(fields)
     .sort(sort);
 
   return query.exec();

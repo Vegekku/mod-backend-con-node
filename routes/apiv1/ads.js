@@ -3,6 +3,8 @@
 const express = require('express');
 const Ad = require('mongoose').model('Ad');
 const { query, body, validationResult } = require('express-validator/check');
+const upload = require('../../lib/multerConfigure');
+const jwtAuth = require('../../lib/jwtAuth');
 
 const router = express.Router();
 
@@ -10,8 +12,8 @@ const router = express.Router();
  * GET /ads
  * Get list of ads
  *
- * http://localhost:3001/api/v1/ads?start=1&limit=3&sort=name&tag=lifestyle
- * http://localhost:3001/api/v1/ads?tag=mobile&sale=false&name=ip&price=50-&start=0&limit=2&sort=price
+ * https://localhost/api/v1/ads?start=1&limit=3&sort=name&tag=lifestyle
+ * https://localhost/api/v1/ads?tag=mobile&sale=false&name=ip&price=50-&start=0&limit=2&sort=price
  */
 router.get(
   '/',
@@ -98,7 +100,7 @@ router.get(
 
       const ads = await Ad.list(filters, start, limit, sort);
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         results: ads
       });
@@ -112,7 +114,7 @@ router.get(
  * POST /ads
  * Post a new ad
  *
- * http://localhost:3001/api/v1/ads
+ * https://localhost/api/v1/ads
  *  tag=mobile
  *  tags=lifestyle
  *  name=example
@@ -123,6 +125,8 @@ router.get(
 router.post(
   '/',
   [
+    jwtAuth(),
+    upload.single('picture'),
     // body('name').isAlphanumeric().withMessage('Must be alphanumeric'),
     body('sale')
       .isBoolean()
@@ -141,7 +145,7 @@ router.post(
         return res.status(400).json({ success: false, errors: errors.array() });
       }
 
-      const data = req.body;
+      const data = { ...req.body, picture: req.file.filename };
       const saveAd = await Ad.createRecord(data);
 
       res.status(201).json({ success: true, result: saveAd });
