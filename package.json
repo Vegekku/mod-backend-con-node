@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "cross-env PORT=3001 DEBUG=nodepop:* nodemon ./bin/www",
+    "start": "cross-env PORT=3000 DEBUG=nodepop:* nodemon ./bin/www",
     "build": "node ./bin/www",
     "dev": "cross-env PORT=3001 DEBUG=nodepop:* nodemon ./bin/www",
     "install-db": "node ./scripts/install_db"
