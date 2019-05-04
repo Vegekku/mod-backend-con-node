@@ -8,6 +8,11 @@ Nodejs project for KeepCoding VI Bootcamp Web.
 4. [Docs](#4.-docs)
 5. [EXTRAS](#5.-extras)
 
+## 0. Requirements
+
+* Node version 11 ??
+* MongoDB v3.6.3 - `sudo apt-get install mongodb`
+
 ## 1. Configuration
 
 ### Install dependencies
@@ -131,6 +136,7 @@ Add to url any of query parameters used in [API GET ads](#get-ads). Examples:
 ## 4. Docs
 
 - [CHANGELOG.md](./docs/CHANGELOG.md)
+- [DEVOPS.md](./docs/DEVOPS.md)
 - [MONGO.md](./docs/MONGO.md)
 - [TASKS.md](./docs/TASKS.md)
 - [TODO.md](./docs/TODO.md)
