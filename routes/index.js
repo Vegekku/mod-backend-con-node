@@ -4,7 +4,7 @@ const { renderResponse } = require('../lib/utils');
 
 const router = express.Router();
 
-const apiRoute = 'http://localhost:3001/api/v1/';
+const apiRoute = 'http://localhost:3000/api/v1/';
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
