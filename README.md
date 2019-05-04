@@ -2,6 +2,11 @@
 
 Nodejs project for KeepCoding VI Bootcamp Web.
 
+>**Important!** Annotations for DevOps practice are founded in [DEVOPS.md](./docs/DEVOPS.md).
+> * Check static site on http://13.53.198.66/.
+> * Check Nodepop on http://ec2-13-53-198-66.eu-north-1.compute.amazonaws.com/
+
+0. [Requirements](#0.-requirements)
 1. [Configuration](#1.-configuration)
 2. [Use API](#2.-use-api)
 3. [Use website](#3.-use-website)
@@ -10,8 +15,8 @@ Nodejs project for KeepCoding VI Bootcamp Web.
 
 ## 0. Requirements
 
-* Node version 11 ??
-* MongoDB v3.6.3 - `sudo apt-get install mongodb`
+* Node version 11 -> Use `nvm` is recommended.
+* MongoDB v3.6.3 -> `sudo apt-get install mongodb`
 
 ## 1. Configuration
 

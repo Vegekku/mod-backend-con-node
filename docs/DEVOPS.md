@@ -2,9 +2,11 @@
 
 [README](../README.md) / DEVOPS
 
-* &#9744; Desplegar en AWS
-  - &#9744; Indicar URL en el README.
-  - &#9744; Node como servidor de app y PM2 como gestor de procesos.
+## Tasks
+
+* &#9745; Desplegar en AWS
+  - &#9745; Indicar URL en el README.
+  - &#9745; Node como servidor de app y PM2 como gestor de procesos.
     - &#9745; Siempre en ejecución y con arranque automático.
   - &#9745; Nginx como proxy inverso
     - &#9745; Servir archivos estáticos con HTTP header X-Owner=Vegekku
@@ -28,8 +30,8 @@ Si se accede al servidor web por dirección IP en lugar de nombre de dominio, de
 
 Puede usarse Docker, pero el resultado ha de ser el mismo.
 
-## Práctica
+## Anotaciones
 
-1. Conexión con instancia.
-  - Solo la primera vez. Descargar clave privada y modificar permisos: `chmod 0600 private-key.pem`
-  - Acceder: `ssh -i file.pem ubuntu@aws.ip`
+* Actualmente la versión corriendo en el servidor AWS es la **v1.1.1**.
+* Se puede hacer uso de los filtros indicados en la parte web.
+* Las peticiones API funcionan a excepción de POST ads.
