@@ -5,8 +5,8 @@
  */
 
 const readline = require('readline');
-const Ad = require('mongoose').model('Ad');
 const db = require('../lib/connectMongoose');
+const Ad = require('../models/Ad');
 const adsData = require('../data/ads.json');
 
 /**
