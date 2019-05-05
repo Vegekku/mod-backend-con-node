@@ -47,19 +47,28 @@ $ npm run install-db
 **Must have installed** [`mkcert`](https://github.com/FiloSottile/mkcert#installation)
 
 ```shell
+$ mkdir certificates
 $ npm run generate-certs
 ```
 
 ### Run the app
 
-On develop environment:
+With pm2 in any environment. **Necessary** to run `thumbnail-microservice` join to nodepop.
+```shell
+# To start pm2
+$ npm run pm2-start
+# To use pm2 commands
+$ npm run pm2 
+```
+
+Just nodepop on develop environment:
 
 ```shell
 $ npm start
 $ npm run dev
 ```
 
-On production environment:
+Just nodepop on production environment:
 
 ```shell
 $ npm run build
@@ -103,7 +112,7 @@ Necessary body parameters to authenticate:
 - **email**: string, user email.
 - **password**: string, user password.
 
-This request return a JWT used in request with authentication.
+This request return a **JWT** used in request with authentication.
 
 ### POST ads
 
