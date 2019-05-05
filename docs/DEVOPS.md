@@ -34,4 +34,10 @@ Puede usarse Docker, pero el resultado ha de ser el mismo.
 
 * Actualmente la versión corriendo en el servidor AWS es la **v1.1.1**.
 * Se puede hacer uso de los filtros indicados en la parte web.
-* Las peticiones API funcionan a excepción de POST ads.
+* Las peticiones API funcionan a excepción de POST ads, donde no está habilitada la subida de imágenes. Se debe de indicar una de las imágenes por defecto para asignarsela al anuncio (bici.jpg, chaqueta.jpg o iphone.png).
+
+## Mejoras
+
+* Protejer el acceso a base de datos con usuario y contraseña. Aunque mongoDb no está expuesta por ningún puerto, debería hacerse.
+* Servir la app con https en lugar de http, tal y como está en **v2.0**. Habrá que realizar cambios en el código para indicar los certificados a utilizar. Actualmente son generados por certbot solo para local.
+* Lanzar la **v2.0** de nodepop, la cual permite la subida de imágenes desde la API.
